@@ -1,0 +1,75 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Countdown</title>
+    </head>
+
+    <!-- <div style="height: 100vh; width: 1px; background-color: red; position: absolute;"></div> -->
+    <body>
+        <!-- <img src="local dev/image.png" class="previewImg" /> -->
+        <div class="popup_wrapper">
+            <div class="popup">
+                <h1>Hoi!</h1>
+                <p>Deze website is een protype en is dus nog niet helemaal klaar! Komende weken komen er fantastische updates aan!</p>
+
+                <label>Vul uw voornaam in:</label>
+                <input id="name_input" />
+                <button id="submit_name">go!</button>
+            </div>
+        </div>
+
+        <main>
+            <div class="title">
+                <h1>Welkom <span id="name" style="user-select: all;"></span>!</h1>
+                <p id="day_info"></p>
+                <p id="lesson_info"></p>
+            </div>
+
+            <div class="wrapper">
+                <div class="info">
+                    <div class="toggle_wrapper">
+                        <div>
+                            <span id="days_togo"></span>
+                            <span id="days_total" class="toggle"></span>
+                            <p>dagen</p>
+                            <p class="toggle">in totaal</p>
+                        </div>
+                    </div>
+
+                    <div class="toggle_wrapper">
+                        <span id="hours_togo" style="font-weight: bold;"></span>
+                        <span id="hours_total" style="font-weight: bold;" class="toggle"></span>
+                        <p>lesuren</p>
+                        <p class="toggle">in totaal</p>
+                    </div>
+
+                    <div style="justify-content: end;" class="toggle_wrapper">
+                        <div>
+                            <span id="weeks_togo"></span>
+                            <span id="weeks_total" class="toggle"></span>
+                            <p>maandagen</p>
+                            <p class="toggle">in totaal</p>
+                            <p style="height:0; visibility: hidden;" class="toggle">maandagen</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bar">
+                <div>
+                    <div>
+                        <p id="percentage">6%</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="info.js"></script>
+        <script src="index.js"></script>
+    </body>
+</html>
