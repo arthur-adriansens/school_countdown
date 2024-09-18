@@ -12,7 +12,10 @@ function get_lesson_info(now) {
     for (let time of Object.keys(schedule)) {
         if (time < now_converted) continue;
 
-        if (time > Number(`${now.getDay()}${schedule[time][3]}`)) return [];
+        if (time > Number(`${now.getDay()}${schedule[time][3]}`)) {
+            const next = Object.keys(schedule).find((x) => x[0] == now.getDay() + 1);
+            return [schedule[next]];
+        }
 
         const index = Object.keys(schedule).indexOf(time) - 1;
         const lesson = schedule[Object.keys(schedule)[index]];
@@ -113,7 +116,7 @@ function update_info() {
     document.querySelector("#day_info").innerHTML = get_day_info(now);
 
     const [basic, extra] = get_lesson_info(now);
-    document.querySelector("#lesson_info").innerHTML = basic ? `${basic[0]} - ${basic[1]}` : "Nederlands - E14";
+    document.querySelector("#lesson_info").innerHTML = `${basic[0]} - ${basic[1]}`;
 
     const total = count_schooldays();
     document.querySelector("#days_total").innerHTML = total.total_schooldays;

@@ -21,7 +21,7 @@ const schedule = {
     30915: ["geschiedenis", "E12", "Sietske Meulebrouck", "1005"],
     31020: ["Frans", "B21", "Charlotte De Vriese", "1110"],
     31110: ["fysica", "C12", "Tim Van Leirsberghe", "1200"],
-    40825: ["aardrijkskunde", "E11", "Mart Grommen", "0915"],
+    40825: ["aardrijkskunde", "E12", "Mart Grommen", "0915"],
     40915: ["chemie", "C22", "Lissa  Van der Pluym", "1005"],
     41020: ["wiskunde", "D11", "Isabel Ternier", "1110"],
     41110: ["wiskunde", "D11", "Isabel Ternier", "1200"],
