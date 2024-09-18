@@ -237,7 +237,7 @@ img.previewImg.visible {
 
 /* ICONS */
 .icons {
-    display: none;
+    display: none !important;
     position: absolute;
     right: 0;
     display: flex;
