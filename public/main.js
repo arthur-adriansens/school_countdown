@@ -116,7 +116,7 @@ function update_info() {
     document.querySelector("#day_info").innerHTML = get_day_info(now);
 
     const [basic, extra] = get_lesson_info(now);
-    document.querySelector("#lesson_info").innerHTML = `${basic[0]} - ${basic[1]}`;
+    document.querySelector("#lesson_info").innerHTML = basic ? `${basic[0]} - ${basic[1]}` : "";
 
     const total = count_schooldays();
     document.querySelector("#days_total").innerHTML = total.total_schooldays;
