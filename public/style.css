@@ -12,6 +12,22 @@
     font-size: calc((16 / 528.74) * 100vh);
 }
 
+.blue:root {
+    --background-color: #E8ECF1;
+    --primary: #B5CFD8;
+    --secondary: #7393A7;
+    --text: #405D72;
+    --border: #6c737e;
+}
+
+.pink:root {
+    --background-color: #FFE6E6;
+    --primary: #E1AFD1;
+    --secondary: #AD88C6;
+    --text: #403a65;
+    --border: #7469B6;
+}
+
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -71,6 +87,10 @@ h1 {
     color: var(--text)
 }
 
+svg {
+    overflow: visible;
+}
+
 p,
 label,
 input,
@@ -78,6 +98,8 @@ button {
     font-family: "Hind", system-ui;
     font-size: 1.125rem;
     color: var(--text);
+    margin-top: .5rem;
+    text-wrap: revert-layer;
 }
 
 /* TITLE */
@@ -173,6 +195,7 @@ button {
     color: var(--background-color);
     opacity: 0;
     transition: opacity 1s;
+    margin-top: 0.3rem;
 }
 
 .bar>div:hover p {
@@ -204,21 +227,30 @@ img.previewImg.visible {
     align-items: center;
     backdrop-filter: blur(0.2rem);
     opacity: 0;
-    display: none;
+    display: flex;
     transition: opacity 1s;
+    pointer-events: none;
 }
 
 .popup_wrapper.visible {
-    display: flex;
     opacity: 1;
+    pointer-events: all;
 }
 
 .popup {
-    background-color: var(--background-color);
     padding: 3rem;
     border-radius: 1.563rem;
+    max-width: 75vw;
+    transition: translate 0.5s;
+    background-color: var(--background-color);
     border: 0.125rem solid var(--border);
-    max-width: 50vw;
+
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin-inline: auto;
+    width: fit-content;
+    translate: 100vw;
 }
 
 .popup input,
@@ -227,7 +259,6 @@ img.previewImg.visible {
     border: 0.125rem solid var(--border);
     padding: .7rem .5rem .5rem .5rem;
     font-size: calc(1.125rem*0.75);
-    margin-left: 5px;
     background-color: white;
 }
 
@@ -236,22 +267,135 @@ img.previewImg.visible {
     color: white;
 }
 
-/* ICONS */
-.icons {
-    display: none !important;
-    position: absolute;
-    right: 0;
+.popup.active {
+    translate: 0;
+}
+
+.popup.hidden {
+    translate: -100vw;
+}
+
+/* COLORS MENU */
+
+div.colors {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+div.colors>div {
+    display: flex;
+    gap: 1rem;
+}
+
+.color {
+    border-radius: 1.563rem;
+    border: 0.125rem solid;
+    overflow: hidden;
+    scale: .9;
+    flex: 1;
+    transition: scale .5s, opacity .5s;
+}
+
+.color:hover,
+.colors:has(.confirm) .color:not(.confirm):hover,
+.color.confirm {
+    scale: 1;
+    opacity: 1;
+}
+
+.colors:has(.confirm) .color:not(.confirm) {
+    opacity: .5;
+}
+
+.colors:has(.confirm)>p:not(.confirm_text),
+p.confirm_text {
+    display: none;
+}
+
+.colors:has(.confirm)>p.confirm_text {
+    display: block;
+}
+
+.color>div {
+    padding: .8rem;
+    text-align: center;
+    pointer-events: none;
+}
+
+.color p {
+    margin: 0;
+    color: var(--color);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ICONS */
+.icons_wrapper {
+    position: absolute;
+    right: 0;
     height: 100%;
-    /* justify-content: center; */
+}
+
+.icons {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    opacity: .5;
+    transition: opacity .5s;
+}
+
+.icons:hover {
+    opacity: 1;
+}
+
+@keyframes click_scale {
+    0% {
+        scale: 1.5;
+    }
+
+    33% {
+        scale: 0.9;
+    }
+
+    66% {
+        scale: 1.5;
+    }
 }
 
 .icons>svg {
-    margin: calc(1.5rem/2);
+    margin: calc(1.5rem/1.5);
+    margin-bottom: 0;
     height: 1.5rem;
     fill: var(--text);
     position: relative;
+    transition: scale .5s;
+    scale: 1;
+}
+
+.icons>svg:hover,
+.icons>svg.click:hover {
+    scale: 1.5;
+}
+
+.click {
+    animation: click_scale 1.5s forwards;
+    scale: 1;
+}
+
+.icons>svg.confetti_btn {
+    margin-bottom: calc(1.5rem/1.5);
+    bottom: 0;
+    position: absolute;
+}
+
+#fullscreen.hidden {
+    transition: opacity 1s, scale 1s;
+    scale: 1;
+    opacity: 0;
+    pointer-events: none;
 }
 
 @media (orientation: portrait) {

@@ -21,6 +21,8 @@ function get_lesson_info(now) {
         const lesson = schedule[Object.keys(schedule)[index]];
         return [lesson.slice(0, 2), lesson.slice(2, 4)];
     }
+
+    return [];
 }
 
 function get_day_info(now) {
@@ -128,34 +130,124 @@ function update_info() {
     document.querySelector("#hours_togo").innerHTML = total.total_lessons - passed.total_lessons_done;
     document.querySelector("#weeks_togo").innerHTML = total.total_weeks - passed.total_weeks_done;
 
-    const percentage = (passed.total_weeks_done / total.total_weeks) * 100;
+    const percentage = (passed.total_schooldays_done / total.total_schooldays) * 100;
     document.documentElement.style.setProperty("--progress", `${percentage}%`);
     document.querySelector("#percentage").innerHTML = `${Math.floor(percentage)}%`;
 }
 
+function fullScreenChange(e) {
+    const fullscreen_btn = document.querySelector("#fullscreen");
+    const inFullScreen = window.innerHeight >= screen.height;
+    inFullScreen ? fullscreen_btn.classList.add("hidden") : fullscreen_btn.classList.remove("hidden");
+
+    if (!e || e.type != "click") return;
+    click_animation(fullscreen_btn);
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    }
+}
+
+function submit_name(keydown_function) {
+    const name = document.querySelector("#name_input").value;
+
+    const wrapper = document.querySelector(".popup_wrapper");
+    const children = Array.from(wrapper.children);
+    document.querySelector(".active").classList.replace("active", "hidden");
+    const new_active_i = children.indexOf(document.querySelector("hidden")) + 2;
+    if (new_active_i <= children.length) {
+        children[new_active_i].classList.add("active");
+    }
+
+    if (name) {
+        localStorage.setItem("name", name);
+        document.querySelector("#name").innerHTML = name;
+
+        document.removeEventListener("click", submit_name);
+        document.removeEventListener("keydown", keydown_function);
+    } else {
+        document.querySelector("#name_input").style.borderColor = "var(--error)";
+    }
+}
+
+function click_animation(element) {
+    element.classList.remove("click");
+    element.classList.add("click");
+    const remove = () => {
+        element.classList.remove("click");
+        element.removeEventListener("animationend", remove);
+    };
+    element.addEventListener("animationend", remove);
+}
+
+function previewColor(e) {
+    if (!e.target.classList.contains("color")) return;
+    const popup = document.querySelector(".popup_wrapper");
+    // click_animation(e.target);
+
+    if (e.target.classList?.contains("confirm")) {
+        popup.classList.remove("visible");
+        localStorage.setItem("color", e.target.dataset.color);
+        return;
+    }
+    document.querySelector(".confirm")?.classList.remove("confirm");
+    e.target.classList.add("confirm");
+
+    popup.classList.remove("visible");
+    setTimeout(() => popup.classList.add("visible"), 5 * 1000);
+
+    document.documentElement.className = "";
+    document.documentElement.classList.add(e.target.dataset.color);
+}
+
 window.onload = () => {
+    /* display name */
     if (!localStorage.getItem("name")) {
         document.querySelector(".popup_wrapper").classList.add("visible");
 
-        document.querySelector("#submit_name").onclick = () => {
-            const name = document.querySelector("#name_input").value;
-
-            if (name) {
-                localStorage.setItem("name", name);
-                document.querySelector(".popup_wrapper").classList.remove("visible");
-                document.querySelector("#name").innerHTML = name;
-            } else {
-                document.querySelector("#name_input").style.borderColor = "var(--error)";
+        document.querySelector("#submit_name").addEventListener("click", submit_name);
+        const keydown = (e) => {
+            if (e.key == "Enter" && e.target.id == "name_input") {
+                submit_name(keydown);
             }
         };
+        document.addEventListener("keydown", keydown);
     }
 
     document.querySelector("#name").innerHTML = localStorage.getItem("name");
-    update_info();
+    document.documentElement.className = localStorage.getItem("color");
 
-    // document.onkeypress = (e) => {
-    //     if (e.key == "h") {
-    //         document.querySelector("img.previewImg").classList.toggle("visible");
-    //     }
-    // };
+    /* main*/
+    const startTime = performance.now();
+    update_info();
+    console.log(`Main function took ${performance.now() - startTime}ms!`);
+    setInterval(update_info, 15 * 1000);
+
+    /* event listeners */
+    document.querySelector(".colors").addEventListener("click", previewColor);
+
+    document.querySelector("#fullscreen").addEventListener("click", fullScreenChange);
+    window.addEventListener("resize", fullScreenChange);
+    fullScreenChange();
+
+    document.querySelector("#edit").addEventListener("click", () => {
+        localStorage.clear();
+        window.location.reload();
+    });
+
+    const edit_btn = document.querySelector("#edit");
+    edit_btn.addEventListener("click", () => click_animation(edit_btn));
+
+    const conefetti_btn = document.querySelector(".confetti_btn");
+    conefetti_btn.addEventListener("click", () => {
+        confetti({
+            particleCount: 1000,
+            spread: Math.floor(Math.random() * (360 - 250 + 1) + 250),
+            origin: {
+                x: 0.5,
+                y: 0.5,
+            },
+        });
+
+        click_animation(conefetti_btn);
+    });
 };
